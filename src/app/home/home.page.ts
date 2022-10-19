@@ -1,4 +1,6 @@
+//<!--TIPYSCRIPE DEL HOME-->
 import { Component } from '@angular/core';
+import { TasksService } from '../services/tasks.service';
 
 @Component({
   selector: 'app-home',
@@ -6,30 +8,30 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  public photos = [];
+  public tasks: string[];
+  public task: string; //tarea individual
 
-
-  constructor() {
-
-    this.photos = [
-      {
-        name: "Foto 1",
-        descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-        url: "https://picsum.photos/id/237/200/300"
-      },
-      {
-
-          name: "Foto 2",
-          descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-          url: "https://picsum.photos/id/238/200/300"
-
-      },
-      {
-        name: "Foto 3",
-        descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-        url: "https://picsum.photos/id/239/200/300"
-      }
-    ]
+  // voy a recibir un atributo en el constructor y también
+  constructor(private taskService: TasksService) {
+    this.tasks = this.taskService.getTasks();
+    this.task = 'algo';
   }
 
+  public addTask() {
+    this.taskService.addTask(this.task);
+    this.tasks = this.taskService.getTasks();
+    console.log(this.tasks);
+    this.task = '';
+  }
+  /*Darle enter en lugar del botón
+  regresar el foco, del cursor.
+*/
+  public removeTask(pos: number) {
+    this.taskService.removeTask(pos);
+    this.tasks = this.taskService.getTasks();
+  }
+
+  onKeydown(event: Event){
+    this.addTask()
+  }
 }
